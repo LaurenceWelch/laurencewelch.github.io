@@ -1,0 +1,165 @@
+---
+layout: post
+title:  "Bandit"
+date:   2023-08-09
+categories: jekyll update
+---
+
+# Bandit 
+
+## Level0
+Our first task is to SSH (secure shell) into the game server. This can be done using the ssh command with the port specified. After that, we can use cat to print the contents of the readme to the terminal.
+```bash
+ssh -p 2220 bandit0@bandit.labs.overthewire.org
+cat readme
+```
+
+## Level1
+For this level we need to view the contents of a file that beings with a dash. We can reference this file by first specifying the current directory using `./`. We can then cat the file as normal.
+```bash
+cat ./-
+```
+
+## Level2
+This level introduces a file with spaces in the name. We can access this file by escaping the spaces. Keep in mind that pressing tab will autocomplete the name, which is easier than manually typing in the backslashes.
+```bash
+cat spaces\ in\ this\ filename
+```
+
+## Level3
+For Level 3, we need to print the contents of a hidden file. Using certain flags, we can modify the `ls` command to include hidden contents. 
+```bash
+cd inhere
+ls -a
+cat .hidden
+```
+
+## Level4
+Level 4 asks us to find and print the ASCII file in the directory. We can use the `file` command to determine the file types of the files. The `*` wildcard character can be used to reference all of the files in the directory.
+```bash
+cd inhere
+ls
+file ./*
+cat ./-file07
+```
+
+## Level5
+To clear this level, we have to find a file with certain parameters. Luckily, the `find` command is awesome.
+```bash
+find -type f -size 1033c
+```
+
+## Level5Alt
+What if `find` wasn't so awesome? Python has two modules we can use for this level, regular expressions and subprocess. Subprocess allows us to run bash commands and regular expressions will help us filter our results. First, we'll run `find` to list the entire contents of the inhere directory. Then, we'll use `split()` to create a list of files. After that, we'll build our lambda function which will run the `stat` command on a particular file. The `stat` command will list attributes regarding the file in question, including the size of the file. Now, we can construct our re string which we'll use to filter the results. The file we are looking for has a size of 1033 bytes. Finally, we can use a list comprehension to filter our results, exit the interpreter using `exit()`, and `cat` the appropriate file. 
+```bash
+python3
+```
+```python
+import re
+import subprocess
+l0 = subprocess.run(["find", "."], capture_output=True).stdout.decode("ascii")
+l0 = l0.split()
+f0 = lambda x: subprocess.run(["stat", x], capture_output=True).stdout.decode("ascii")
+res = "Size: 1033"
+[x for x in l0 if re.findall(res, f0(x))]
+```
+
+## lvl6
+For this level we can utilize useful flags from the find command. Searching in root is going to give us a lot of permission errors so we can send them to the oblivion of `/dev/null`.
+```bash
+find / -type f -size 33c -user bandit7 -group bandit6 2>/dev/null
+```
+
+## lvl7
+Level 7 tells us that the password is next to a certain word in a text file. We can use `grep` to search within the text file for that word.
+```bash
+grep "millionth" data.txt
+```
+
+## lvl8
+We can use the power of the `uniq` command to solve this level. The `-c` flag will count the number of occurences of each line and insert it into the printed result. We can then pipe this into grep to find results that appeared only once.
+```bash
+cat data.txt | sort | uniq -c | grep "1 "
+```
+
+## lvl9
+For level 9, we can pipe `strings` into a grep.
+```bash
+strings data.txt | grep "== "
+```
+
+## lvl10
+The `base64` command finishes this level.
+```bash
+base64 -d data.txt
+```
+
+## lvl11
+For this one, we can use the `tr` command to translate the characters by the desired amount. Moving the character a 13 places results in a n. Moving the character m, result in a z, meaning that m is the last character we can rotate before we have to circle back to a. Moving n 13 places results in an a as expected. With this knowledge, we can repeat the same thought process for uppercase letters.
+```bash
+echo [string] | tr [a-mn-zA-MN-Z] [n-za-mN-ZA-M]
+```
+
+## lvl11Alt
+For this one, we need to rotate the characters in a string by 13 places. Let's use python for this. We can start the python interpreter by entering `python3` into the terminal. Then, we can create a variable that stores the string we want to decode. Now, let's convert the string into a list of numbers using a list comprehension, the `ord` function will transpose the characters into their numerical representation. Now, let's do some digging to find out what the numerical representations are for the lower and upper ranges of characters we could potentially come across. For example A is 65 whereas Z is 90. Let us now make a function that adds two numbers and circles back to the lower range if the result exceeds the upper range. One way to think about this is adding 1 to the character Z. If we add 1 to Z, we want to get A back, in other words, 90 + 1 should equal 65. After crafting our function, we need to make another function to ensure that special characters and numbers are ignored. After that, let's make a function that utilized both of the previous functions to correctly rotate the numbers. Finally, we can use the `join` function on a list comprehension to get our result.
+```bash
+python3
+```
+```python
+s1 = "[string contents]"
+l1 = [ord(s1[x]) for x in range(len(s1))]
+ord('a') #97
+ord('z') #122
+ord('A') #65
+ord('Z') #90
+ord(' ') #32
+addwithrange lambda num,by,lower,upper: num+by if num+by < upper+1 else numb+by-upper+lower-1
+isspecial = lambda x: True if x < 65 or x > 122 or (x > 90 and x < 97) else False
+getnewnum = lambda num,by: num if isspecial(num) else addwithrange(num,by,65,90) if num<91 else addwithrange(num,by,97,122)
+"".join([chr(getnewnum(x, 13)) for x in l1])
+```
+
+## lvl12
+
+
+## lvl16
+First, lets find which ports are open. We can use the `nc` command with the `-zv` flags to scan a range of ports. `2>&1` is used to send errors into the standard output and `grep` is used to filter out connections that were refused. Finally, we can use `awk` to print the specific column of information we want: the port number. 
+Now that we have the port number saved to a variable, we can view the results and then one by one, test them using the `openssl` command. The correct port will give us a private key which we can use as an identity file (`ssh -i`) when we connect to the next level. After creating the file and copying the key into it, we need to alter the permissions using `chmod`.
+```bash
+ports=$(nc -zv localhost 31000-32000 2>&1 | grep -v "refused" | awk '{print $5}')
+echo $ports
+cat /etc/bandit_pass/bandit16 | openssl s_client -connect localhost:31790 -ign_eof
+```
+```bash
+touch [keyfile]
+chmod 400 [keyfile]
+```
+
+## lvl17
+For this level, we can the `diff` command to see what lines are different among the two files. We could also use vim with the `-d` flag to see a larger representation.
+```bash
+diff passwords.new passwords.old
+```
+
+## lvl18
+Level 18 kicks us out as soon as we ssh, but that's okay, we can run commands using ssh.
+```bash
+ssh -p 2220 bandit18@bandit.labs.overthewire.org "cat readme"
+```
+
+## lvl19
+This level introduces special permissions. If we take a look at the executable file, we can see that the file's group is bandit19 (us) and the user is bandit20. However, the special user bit (SUID) is set for this file because the `ls -l` result is depicting an `s` where an `x` would normally be. This means that when we execute the file, we will be treated as bandit20, not bandit19. We can show this by executing the `whoami` command. With this information, we can print the next password.
+```bash
+ls -l
+./bandit20-do
+./bandit20-do whoami
+./bandit20-do cat /etc/bandit_pass/bandit20
+```
+
+# lvl20
+```bash
+nc -lp [port] < /etc/bandit_pass/bandit20
+```
+```bash
+./suconnect [port]
+```

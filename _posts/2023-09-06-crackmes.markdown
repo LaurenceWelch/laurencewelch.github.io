@@ -1,0 +1,19 @@
+---
+layout: post
+title:  "Crackmes"
+date:   2023-09-06
+categories: ghidra
+---
+
+## gerryvanboven's get the passcode
+After opening the file in Ghidra, I navigated to the main function. The main function uses `scanf` to get user input. It then compares this input to a local variable. This local variable is set in the beginning of the function.
+```c
+local_c = 0x130104
+```
+Later on in the main function, the local variable and the scanned variable are compared; if they are equal the file is cracked. Python can be used to retrieve the decimal value of local_c.
+```bash
+python3
+```
+```python
+int("130104", base=16)
+```

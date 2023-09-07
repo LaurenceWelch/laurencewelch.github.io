@@ -1,9 +1,51 @@
 ---
 layout: post
-title:  "Bandit"
+title:  "Bandit Wargames"
 date:   2023-08-09
 categories: jekyll update
 ---
+
+## Bandit Primer
+# SSH and RSA
+The bandit wargames make frequent usage of ssh (secure shell) to log into the game server. Secure shell is a way of running commands on a remote server. To initiate an ssh connection, a command is typed in the terminal if you're using macos or linux, or the powershell if you're using a windows operating system.
+```bash
+ssh [user]@[ip address or hostname]
+```
+For example, if I want to connect as user bandit0 to the bandit wargames server, I can execute the following command.
+```bash
+ssh -p 2220 bandit0@bandit.labs.overthewire.org
+```
+Additional flags can be used such as the `-p` flag to specify a port and the `-i` flag to specify a key file used for passwordless entry.
+
+SSH makes use of asymmetric encryption for purposes of authenticity and confidentiality. What does this mean? Let's take RSA, an asymmetric encryption algorithm as an example. It is called asymmetric because it uses two keys. One key is used to encrypt the contents and the other is used to decrypt it. This is different than symmetric algorithms which use a single key to encrypt and decrypt contents. One key is known as the private key and the other is known as the public key. Private keys are never shared and are kept secret forever. Public keys on the other hand can be shared.
+
+What is the benefit of two keys? Imagine we have two people: Mac and Charlie. Mac wants to send Charlie encrypted information in which only Charlie can decrypt it, in other words he wants confidentiality. Mac can encrypt a message using Charlie's PUBLIC key. Then, Charlie can decrypt it using Charile's PRIVATE key. Other people might know of Charlie's PUBLIC key, but only Charlie can decrypt the message because no one has Charlie's PRIVATE key.
+
+Another usage is Authenticity. What if Charlie is sending a reply to Mac and he wants to ensure that Mac knows that the message is definately coming from Charlie (not an imposter). Charlie can encrypt the message using his own (Charlie) PRIVATE key. Then, Mac can try to decrypt the message using Charlie's PUBLIC key. If it works, he knows that the message came from Charlie. In this situation, other people could theoretically intercept the message and decrypt it with Charlie's public key, in other words, it doesn't make the message confidential, it only ensures that Charlie was the one who sent the message.
+
+Now Mac is sending a reply to Charlie and he wants Authenticity and Confidentiality, how can he achieve this? Mac can encrypt his message using his own (Mac) private key. Then, he can encrypt the message again using Charlie's public key! When Charlie receives the message, he can decrypt it using his own (Charlie) private key and than decrypt it again using Mac's public key. At his point he knows that the message is an authentic Mac message and that no one intercepting the message could have decrypted it!
+
+SSH makes usage of such asymmetric encryption in order to secure traffic from your computer to the remote server. A good way to practice these concepts is to make a ubuntu VM using something like virtualbox. Here are some research topic to google.
+concepts:
+```
+the known_hosts file
+ssh fingerprint
+ssh with an identity (rsa key) file (-i flag)
+preventing password authentication through ssh
+commands:
+```bash
+ssh-keygen
+man ssh
+man scp
+```
+files and directories:
+```
+.ssh/
+known_hosts
+/etc/ssh/
+/etc/sshd_config
+/var/log/auth.log
+```
 
 ## Level 0
 Our first task is to SSH (secure shell) into the game server. This can be done using the ssh command with the port specified. After that, we can use cat to print the contents of the readme to the terminal.
@@ -127,7 +169,7 @@ We can use xxd to reverse the hexdump.
 ```bash
 xxd -r data datar
 ```
-Let's use file to determine the type of file. The shell tells us that it gzipcompressed. So, let's rename it to use the gz file extension and then decompress it.
+Let's use file to determine the type of file. The shell tells us that it gzip compressed. So, let's rename it to use the gz file extension and then decompress it.
 ```bash
 file datar
 mv datar data.gz
@@ -138,7 +180,7 @@ Using file again, we can see that it is bzip2 compressed.
 file data
 bzcat data > data2
 ```
-We will have to decompress the file a couple more times after this. Make sure to use `file` to see what type of decompression you should perform after each decompression. At certain points, in addition to `gunzip` and `bzcat`, you will have to use `tar xf` as well.
+We will have to decompress the file a couple more times after this. Make sure to use `file` to see what type of decompression you should perform after each decompression. At certain points, in addition to `gunzip` and `bzcat`, you will have to use `tar -xf` as well.
 
 ## Level 13
 Upon logging into bandit13 and using `ls`, we are greeted with a single file. The file is a private key for ssh purposes. Let's copy it back to our personal machine and use it to ssh into level 14. Once we attempt to use the key, we will get an error stating that the key's permissions are too permisive, we can remedy that with `chmod`.
@@ -147,6 +189,7 @@ exit
 scp -P 2220 bandit13@bandit.labs.overthewire.org:sshkey.private .
 chmod 400 sshkey.private
 ssh -p 2220 -i sshkey.private bandit14@bandit.labs.overthewire.org
+```
 
 ## Level 14
 For this level we need to submit the current password to a certain port. We can use netcat for this.

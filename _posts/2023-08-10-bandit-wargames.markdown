@@ -5,7 +5,8 @@ date:   2023-08-09
 categories: jekyll update
 ---
 
-![a key](https://unsplash.com/photos/1bjsASjhfkE)
+![a key](https://images.unsplash.com/photo-1553991562-9f24b119ff51?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2678&q=80)
+
 ## Bandit Primer
 # SSH and RSA
 The bandit wargames make frequent usage of ssh (secure shell) to log into the game server. Secure shell is a way of running commands on a remote server. To initiate an ssh connection, a command is typed in the terminal if you're using macos or linux, or the powershell if you're using a windows operating system.

@@ -5,6 +5,7 @@ date:   2023-08-09
 categories: jekyll update
 ---
 
+![a key](https://unsplash.com/photos/1bjsASjhfkE)
 ## Bandit Primer
 # SSH and RSA
 The bandit wargames make frequent usage of ssh (secure shell) to log into the game server. Secure shell is a way of running commands on a remote server. To initiate an ssh connection, a command is typed in the terminal if you're using macos or linux, or the powershell if you're using a windows operating system.
@@ -26,18 +27,22 @@ Another usage is Authenticity. What if Charlie is sending a reply to Mac and he 
 Now Mac is sending a reply to Charlie and he wants Authenticity and Confidentiality, how can he achieve this? Mac can encrypt his message using his own (Mac) private key. Then, he can encrypt the message again using Charlie's public key! When Charlie receives the message, he can decrypt it using his own (Charlie) private key and than decrypt it again using Mac's public key. At his point he knows that the message is an authentic Mac message and that no one intercepting the message could have decrypted it!
 
 SSH makes usage of such asymmetric encryption in order to secure traffic from your computer to the remote server. A good way to practice these concepts is to make a ubuntu VM using something like virtualbox. Here are some research topic to google.
+
 concepts:
 ```
 the known_hosts file
 ssh fingerprint
 ssh with an identity (rsa key) file (-i flag)
 preventing password authentication through ssh
+```
+
 commands:
 ```bash
-ssh-keygen
+man ssh-keygen
 man ssh
 man scp
 ```
+
 files and directories:
 ```
 .ssh/

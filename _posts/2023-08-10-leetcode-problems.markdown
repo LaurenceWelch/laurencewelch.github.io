@@ -5,9 +5,11 @@ date:   2023-10-03
 categories: jekyll update
 ---
 
-![a key](https://images.unsplash.com/photo-1553991562-9f24b119ff51?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2678&q=80)
+|![a key](https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80)|
+|:--:|
+|*Shahadat Rahman via unsplash*|
 
-## 88. Merge Sorted Array
+# 88. Merge Sorted Array
 ```python
 def merge(self, nums1: List[int], m: int, nums2: List[int], n: int) -> None:
     i1 = m - 1
@@ -23,7 +25,7 @@ def merge(self, nums1: List[int], m: int, nums2: List[int], n: int) -> None:
         cur -=1
 ```
 
-## 27. Remove Element
+# 27. Remove Element
 ```python
 def removeElement(self, nums: List[int], val: int) -> int:
     cur = 0
@@ -34,7 +36,7 @@ def removeElement(self, nums: List[int], val: int) -> int:
     return cur
 ```
 
-## 28. Remove Duplicates from Sorted Array
+# 28. Remove Duplicates from Sorted Array
 ```python
 def removeDuplicates(self, nums: List[int]) -> int:
     dic = {}
@@ -65,7 +67,7 @@ def removeDuplicates(self, nums: List[int]) -> int:
     return cur
 ```
 
-## 169. Majority Element
+# 169. Majority Element
 ```python
 def majorityElement(self, nums: List[int]) -> int:
     dic = {}
@@ -79,7 +81,7 @@ def majorityElement(self, nums: List[int]) -> int:
             return num
 ```
 
-## 189. Rotate Array
+# 189. Rotate Array
 ```python
 def rotate(self, nums: List[int], k: int) -> None:
     dic = {}
@@ -93,7 +95,7 @@ def rotate(self, nums: List[int], k: int) -> None:
             nums[c] = nums[target]
 ```
 
-## 121. Best Time to Buy and Sell Stock
+# 121. Best Time to Buy and Sell Stock
 ```python
 def maxProfit(self, prices: List[int]) -> int:
     highestp = 0
@@ -109,7 +111,8 @@ def maxProfit(self, prices: List[int]) -> int:
     return highestp
 ```
 
-## 135. Candy
+# 135. Candy
+```python
 class Solution:
     def candy(self, ratings: List[int]) -> int:
         lenList = len(ratings)
@@ -132,8 +135,10 @@ class Solution:
                 candies[c] = candies[c + 1] + 1
 
         return sum(candies)
+```
 
-## 13. Roman to Integer
+# 13. Roman to Integer
+```python
 class Solution:
     def romanToInt(self, s: str) -> int:
         numerals = {}
@@ -159,8 +164,10 @@ class Solution:
             c += 1
 
         return result
+```
        
-## 125. Valid Palindrome
+# 125. Valid Palindrome
+```python
 class Solution:
     def isPalindrome(self, s: str) -> bool:
         s = re.sub("[^a-zA-Z0-9]", "", s)
@@ -169,9 +176,10 @@ class Solution:
         for i in range(0, int(len(s) * 0.5)):
             if s[i] != s[-i - 1]: return False
         return True
-        
+```        
 
-## 383. Ransom Note
+# 383. Ransom Note
+```python
 def fun(x, d):
     if x in d: d[x] += 1
     else: d[x] = 1
@@ -190,8 +198,10 @@ class Solution:
             else: 
                 return False
         return True 
+```
 
-## 228. Summary Ranges
+# 228. Summary Ranges
+```python
 class Solution:
     def summaryRanges(self, nums: List[int]) -> List[str]:
         if len(nums) == 0: return []
@@ -220,8 +230,9 @@ class Solution:
             chain += "->" + str(currVal)
         ranges.append(chain)
         return ranges
+```
 
-## 141. Linked List Cycle
+# 141. Linked List Cycle
 This problem gives a linked list. Sometimes the linked list wraps around itself and becomes infinite, other times, the linked list ends normally. We need to discover if the linked list wraps around, but how can we do that? 
 Think about a high school track team running laps. Let's say you have a slow runner and a fast runner. The fast runner would end up looping around and passing the slow runner multiple times. On the other hand, if they were running a race from the parking lot to the principal's office, they would never see each other. The fast runner would simply finish the race and then head to the cafeteria for some pasta carbonara. So, all we have to do, is make two virtual runners traversing through the list. If they meet, we know that it's a loop.
 First, we need to account for two possible exit conditions, the list is null, or the list has no next. In both of these situations the list doesn't loop. Then, we need to create two runners, cur1 and cur2. Cur2 is faster and we need to give cur2 a headstart so that they don't meet up right away. Thus cur1 (slower runner) will be set to head and cur2 (faster runner) will be set to head->next. Then, we loop through the list making sure that cur1 is moving once per iteration and cur2 is moving twice per iteration. If they ever meet up, it meens cur2 looped around and caught up to cur1: in other words, the list is looping.
@@ -251,7 +262,7 @@ class Solution:
         return True
 ```
 
-## 136. Single Number
+# 136. Single Number
 For this problem we are given a list of numbers. Every number in the list appears twice except for one special number that appears only once, we need to find that special number. Below is an example list.
 ```
 [1, 1, 2, 3, 3]
@@ -316,7 +327,7 @@ class Solution:
         return 2 * setSum - listSum
 ```
 
-## 66. Plus One
+# 66. Plus One
 For this problem we are given a list of digits that represent a number. `[1, 2, 3, 4]` for example would represent the number 1234. We need to add 1 to this one number and then return a list of digits representing the new number.
 One way to solve this problem is to: convert the digits list into one number, then add 1 to this number, then convert this number back into a list. We can use the join() method which will transform a list into a string, except to use join, we need a list of strings, not integers. To convert a value into a list, we can use list(), although the value must be a string, not an integer.
 ```python
@@ -337,7 +348,7 @@ class Solution:
         return [int(x) for x in list(str(num))]
 ```
 
-## 70. Climbing Stairs
+# 70. Climbing Stairs
 For this problem we are given the following rules: a staircase has `n` steps, we can either go up 2 steps at a time or 1 step at a time. Give a staircase with `n` steps, how many different ways can we go up the staircase.
 If n is 1, there is only 1 way.
 ```
@@ -373,7 +384,7 @@ class Solution:
         return prev2
 ```
 
-## 67. Add Binary
+# 67. Add Binary
 ```python
 class Solution:
     def addBinary(self, a: str, b: str) -> str:
@@ -409,7 +420,7 @@ class Solution:
         return ''
 ```
 
-## 58. Length of Last Word
+# 58. Length of Last Word
 For this problem we need to find the length of the last word in a sentence. Python makes this one easy. We can use the `split()` method, which by default, splits a string by spaces into a list. Then, we can take the `[-1]` or last index of the list and return the `len()` of it.
 ```python
 class Solution:
@@ -417,7 +428,7 @@ class Solution:
         return len(s.split()[-1])
 ```
 
-## 28. Find the Index of first Occ. in Str
+# 28. Find the Index of first Occ. in Str
 This problem asks us to find the index of the first appearance of a str in another str. We can utilize the `index()` method to find the index, however, since `index()` can throw an error, we can first check if the index exists using `needle in haystack`.
 ```python
 class Solution:
@@ -427,7 +438,7 @@ class Solution:
         return -1
 ```
 
-## 392. Is Subsequence
+# 392. Is Subsequence
 This problem asks us to determine if a string s is a subsequence of string t. S is a subsequence of t if some or none of t's characters can be removed to result in s being a substring of t. So basically we want to check if it is possible to remove 'junk characters' from t so that s is in t. One way to do this is to iterate through s, checking at each loop if the character from s is in t. The moment we find a character from s that is not in t, we know it's not a subsequence and we can return False. If an iteration succeeds, we can continue, but we need to ensure that the character in t that matched, can't match again, so we need to keep track of its index and search from beyond that index.
 ```python
 class Solution:
@@ -441,7 +452,7 @@ class Solution:
         return True
 ```
 
-## 205. Isomorphic Strings
+# 205. Isomorphic Strings
 For this problem we need to see if two strings, s and t are isomorphic. S and t are isomorphic if characters in s can be translated to a different character to get t. However, no two characters can map to the same character and same characters must map to a specific character. For this problem we can use two dictionaries. One dict. is used to keep track of mappings, i.e. 'a' is mapped to '[some character]'. Another dictionary is used to make sure that mappings don't overlap, for example both 'a' and 'b' can't be mapped to 'c'. We can iterate through the characters of s, updating our dictionaries and checking if any issues occur, in which we return False.
 ```python
 class Solution:
@@ -462,7 +473,7 @@ class Solution:
         return True
 ```
 
-## 202. Happy Number
+# 202. Happy Number
 For this problem, we have to determine if a number if a happy number. Imagine we have the number 19. Square each of the digits (1 and 9) and add them together and we get 82. Now add the square of those digits (8 and 2) and we get 68. Repeat this process and if we eventually get 1, the number is happy. On the other hand, if the process loops forever without ever getting 1, it's not a happy number. How can we detect an endless loop? We can keep a dictionary of results, if we get a sum that's already in the dictionary, we can assume that a loop is happening and we can return False.
 ```python
 class Solution:
@@ -481,9 +492,9 @@ class Solution:
             num = newNum 
 ```
 
-21. Merge Two Two Sorted Lists
-```python
+# 21. Merge Two Two Sorted Lists
 For this problem we need to merge two linked list which are sorted. We need to ensure that our returned list is also sorted. To solve this problem we can make a new list. Each iteration we can check list1 and list2, take the lower value, and append it to our new linked list. To make sure we aren't repeating ourselves, after appending a node, we have to increment the list in which we pulled a value from. After this, we have to check if their are any leftover nodes in either list and if so, append them to the end of our new list.
+```python
 class Solution:
     def mergeTwoLists(self, list1: Optional[ListNode], list2: Optional[ListNode]) -> Optional[ListNode]:
         #create a new head

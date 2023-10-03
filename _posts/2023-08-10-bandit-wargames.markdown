@@ -5,7 +5,9 @@ date:   2023-08-09
 categories: jekyll update
 ---
 
-![a key](https://images.unsplash.com/photo-1553991562-9f24b119ff51?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2678&q=80)
+|![a key](https://images.unsplash.com/photo-1553991562-9f24b119ff51?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2678&q=80) |
+|:--:|
+| *Michael Dziedzic via unsplash* |
 
 ## Bandit Primer
 # SSH and RSA
@@ -53,26 +55,26 @@ known_hosts
 /var/log/auth.log
 ```
 
-## Level 0
+# Level 0
 Our first task is to SSH (secure shell) into the game server. This can be done using the ssh command with the port specified. After that, we can use cat to print the contents of the readme to the terminal.
 ```bash
 ssh -p 2220 bandit0@bandit.labs.overthewire.org
 cat readme
 ```
 
-## Level 1
+# Level 1
 For this level we need to view the contents of a file that beings with a dash. We can reference this file by first specifying the current directory using `./`. We can then cat the file as normal.
 ```bash
 cat ./-
 ```
 
-## Level 2
+# Level 2
 This level introduces a file with spaces in the name. We can access this file by escaping the spaces. Keep in mind that pressing tab will autocomplete the name, which is easier than manually typing in the backslashes.
 ```bash
 cat spaces\ in\ this\ filename
 ```
 
-## Level 3
+# Level 3
 For Level 3, we need to print the contents of a hidden file. Using certain flags, we can modify the `ls` command to include hidden contents. 
 ```bash
 cd inhere
@@ -80,7 +82,7 @@ ls -a
 cat .hidden
 ```
 
-## Level 4
+# Level 4
 Level 4 asks us to find and print the ASCII file in the directory. We can use the `file` command to determine the file types of the files. The `*` wildcard character can be used to reference all of the files in the directory.
 ```bash
 cd inhere
@@ -89,13 +91,13 @@ file ./*
 cat ./-file07
 ```
 
-## Level 5
+# Level 5
 To clear this level, we have to find a file with certain parameters. Luckily, the `find` command is awesome.
 ```bash
 find . -type f -size 1033c
 ```
 
-## Level 5 Alt
+# Level 5 Alt
 Here is the solution I used before I learned about the file attribute flags demonstrated above. I used two python modules for this one, Subprocess and RE. Subprocess allows us to run bash commands and regular expressions will help us filter our results. First, we'll run `find` to list the entire contents of the inhere directory. Then, we'll use `split()` to create a list of files. After that, we'll build our lambda function which will run the `stat` command on a particular file. The `stat` command will list attributes regarding the file in question, including the size of the file. Now, we can construct our re string which we'll use to filter the results. The file we are looking for has a size of 1033 bytes. Finally, we can use a list comprehension to filter our results, exit the interpreter using `exit()`, and `cat` the appropriate file. 
 ```bash
 python3
@@ -110,43 +112,43 @@ res = "Size: 1033"
 [x for x in l0 if re.findall(res, f0(x))]
 ```
 
-## Level 6
+# Level 6
 For this level we can utilize useful flags from the find command. Searching in root is going to give us a lot of permission errors so we can send them to the oblivion of `/dev/null`.
 ```bash
 find / -type f -size 33c -user bandit7 -group bandit6 2>/dev/null
 ```
 
-## Level 7
+# Level 7
 Level 7 tells us that the password is next to a certain word in a text file. We can use `grep` to search within the text file for that word.
 ```bash
 grep "millionth" data.txt
 ```
 
-## Level 8
+# Level 8
 We can use the power of the `uniq` command to solve this level. The `-c` flag will count the number of occurences of each line and insert it into the printed result. We can then pipe this into grep to find results that appeared only once.
 ```bash
 cat data.txt | sort | uniq -c | grep "1 "
 ```
 
-## Level 9
+# Level 9
 For level 9, we can pipe `strings` into a grep.
 ```bash
 strings data.txt | grep "== "
 ```
 
-## Level 10
+# Level 10
 The `base64` command finishes this level.
 ```bash
 base64 -d data.txt
 ```
 
-## Level 11
+# Level 11
 For this one, we can use the `tr` command to translate the characters by the desired amount. Moving the character a 13 places results in a n. Moving the character m, result in a z, meaning that m is the last character we can rotate before we have to circle back to a. Moving n 13 places results in an a as expected. With this knowledge, we can repeat the same thought process for uppercase letters.
 ```bash
 echo [string] | tr [a-mn-zA-MN-Z] [n-za-mN-ZA-M]
 ```
 
-## Level 11 Alt
+# Level 11 Alt
 Once again, I'll show the method I used before learning about the `tr` command. We can start the python interpreter by entering `python3` into the terminal. Then, we can create a variable that stores the string we want to decode. Now, let's convert the string into a list of numbers using a list comprehension, the `ord` function will transpose the characters into their numerical representation. Now, let's do some digging to find out what the numerical representations are for the lower and upper ranges of characters we could potentially come across. For example A is 65 whereas Z is 90. Let us now make a function that adds two numbers and circles back to the lower range if the result exceeds the upper range. One way to think about this is adding 1 to the character Z. If we add 1 to Z, we want to get A back, in other words, 90 + 1 should equal 65. After crafting our function, we need to make another function to ensure that special characters and numbers are ignored. After that, let's make a function that utilized both of the previous functions to correctly rotate the numbers. Finally, we can use the `join` function on a list comprehension to get our result.
 ```bash
 python3
@@ -165,7 +167,7 @@ getnewnum = lambda num,by: num if isspecial(num) else addwithrange(num,by,65,90)
 "".join([chr(getnewnum(x, 13)) for x in l1])
 ```
 
-## Level 12
+# Level 12
 For this level we need to un-hexdump a file and then decompress it a bunch of times. Let's start by making a temp folder to perform our commands.
 ```bash
 cd $(mktemp -d)
@@ -188,7 +190,7 @@ bzcat data > data2
 ```
 We will have to decompress the file a couple more times after this. Make sure to use `file` to see what type of decompression you should perform after each decompression. At certain points, in addition to `gunzip` and `bzcat`, you will have to use `tar -xf` as well.
 
-## Level 13
+# Level 13
 Upon logging into bandit13 and using `ls`, we are greeted with a single file. The file is a private key for ssh purposes. Let's copy it back to our personal machine and use it to ssh into level 14. Once we attempt to use the key, we will get an error stating that the key's permissions are too permisive, we can remedy that with `chmod`.
 ```bash
 exit
@@ -197,19 +199,19 @@ chmod 400 sshkey.private
 ssh -p 2220 -i sshkey.private bandit14@bandit.labs.overthewire.org
 ```
 
-## Level 14
+# Level 14
 For this level we need to submit the current password to a certain port. We can use netcat for this.
 ```bash
 cat /etc/bandit_pass/bandit14 | nc localhost 30000
 ```
 
-## Level 15
+# Level 15
 For this level we need to submit the current password to a specific port using SSL. We can use `openssl` for this.
 ```bash
 cat /etc/bandit_pass/bandit15 | openssl s_client -connect localhost:30001 -ign_eof 
 ```
 
-## Level 16
+# Level 16
 First, lets find which ports are open. We can use the `nc` command with the `-zv` flags to scan a range of ports. `2>&1` is used to send errors into the standard output and `grep` is used to filter out connections that were refused. Finally, we can use `awk` to print the specific column of information we want: the port number. 
 Now that we have the port number saved to a variable, we can view the results and then one by one, test them using the `openssl` command. The correct port will give us a private key which we can use as an identity file (`ssh -i`) when we connect to the next level. After creating the file and copying the key into it, we need to alter the permissions using `chmod`.
 ```bash
@@ -223,19 +225,19 @@ touch [keyfile]
 chmod 400 [keyfile]
 ```
 
-## Level 17
+# Level 17
 For this level, we can the `diff` command to see what lines are different among the two files. We could also use vim with the `-d` flag to see a larger representation.
 ```bash
 diff passwords.new passwords.old
 ```
 
-## Level 18
+# Level 18
 Level 18 kicks us out as soon as we ssh, but that's okay, we can run commands using ssh.
 ```bash
 ssh -p 2220 bandit18@bandit.labs.overthewire.org "cat readme"
 ```
 
-## Level 19
+# Level 19
 This level introduces special permissions. If we take a look at the executable file, we can see that the file's group is bandit19 (us) and the user is bandit20. However, the special user bit (SUID) is set for this file because the `ls -l` result is depicting an `s` where an `x` would normally be. This means that when we execute the file, we will be treated as bandit20, not bandit19. We can show this by executing the `whoami` command. With this information, we can print the next password.
 ```bash
 ls -l
@@ -244,7 +246,7 @@ ls -l
 ./bandit20-do cat /etc/bandit_pass/bandit20
 ```
 
-## Level 20
+# Level 20
 ```bash
 nc -lp [port] < /etc/bandit_pass/bandit20
 ```
@@ -252,7 +254,7 @@ nc -lp [port] < /etc/bandit_pass/bandit20
 ./suconnect [port]
 ```
 
-## Level 21
+# Level 21
 For level 21, we need to dig into some cron jobs. Once we `cd` to the `/etc/cron.d` directory, we can `cat` the contents of the files. With this information, we can `cd` to the directory of the shell scripts in question: `/usr/bin`. A `ls -l cron*` command will list the right files along with permissions. Perusing the permissions will tell us that we have group read access to a particular script which we can analyze with vim. Analyzing the file will tell us that the script is putting information into a specific file, we can cat that file to get the information we need.
 ```bash
 cd /etc/cron.d
@@ -263,21 +265,21 @@ vi [file]
 cat [path]
 ```
 
-## Level 22
+# Level 22
 Based on our experience playing these bandit games, we can assume that the next password is related to bandit23. Using similar detective skills from the previous level, we can analyze the relevant files and end up back in `/usr/bin` to analyze the bandit23 shell script being run. Looking at the script we can see that its using the result of the `whoami` command in several places. Running the `whoami` command in the terminal will return bandit22. In other words, if we run the script as bandit22, it will pull the bandit22 password and input it into a file. However, we want the bandit23 password, not the 22. Looking back at the relevant file in `/etc/cron.d`, we can see that the cron job is being run every minute and that it will run as user bandit23! Let's swing back to the script and see where it's putting the file. Once again, it's using the result of the `whoami` command and the `md5sum` command to create the directory name. So, we can find the directory by running the commands as if we were bandit23!
 ```bash
 echo "I am user bandit23" | md5sum
 cat /tmp/[path]
 ```
 
-## Level 23
+# Level 23
 This level follows a similar pattern to the previous cron oriented challenges. We should check out the bandit24 cron job in /etc/cron.d to discover the location of the script being run (/usr/bin), and then analyze that script. The script is running and then deleting scripts placed in /etc/spool/bandit24/foo. So theoretically, all we have to do is make a script that will cat the contents of the bandit24 password file and then save it to a file. After we make our script, we should use `chmod` to make it executable and then `cp` the script into the foo directory.
 ```bash
 #!/bin/bash
 cat /etc/bandit_pass/bandit24 >> /tmp/blarg.txt
 ```
 
-## Level 24
+# Level 24
 For this level we need to brute force a 4-digit pin and send it along with a password to a specific port.
 ```bash
 echo "$(cat /etc/bandit_pass/bandit24) 1234" | nc localhost 30002
@@ -337,7 +339,7 @@ ls
 ./bandit27-do cat /etc/bandit_pass/bandit27
 ```
 
-## Level 27
+# Level 27
 For this level we need to clone a git repo. Let's make temporary place to put our stuff first.
 ```bash
 mktemp -d
@@ -349,7 +351,7 @@ git clone ssh://bandit27-git@localhost:2220/home/bandit27-git/repo
 ```
 After typing in the current level's password when prompted, we can investigate the repo and easily find the next password!
 
-## Level 28
+# Level 28
 This one looks similar to the last one! Let's start by making our temp directory.
 ```bash
 cd $(mktemp -d)
@@ -368,7 +370,7 @@ git checkout [previous commit id]
 ```
 Now, when we look at the readme, the password is exposed!
 
-## Level 29
+# Level 29
 More git stuff! Follow the previous instruction and get your git repo then start investigating. This repo has multiple branches. We can look at different branches by using git commands.
 ```bash
 git branch -a #list branches
@@ -376,14 +378,14 @@ git switch [branch]
 ```
 If you switch to the dev branch and take a look at the readme, you can find the password!
 
-## Level 30
+# Level 30
 As usual, let's clone the git repo and start investigating. This time the repo is quite barebones. It seems like git logs and branches won't help us here. Git has many ways of storing and organizing data. One of these methods is using tags. Tags are used to mark important moments in the repo's history; like a new version. Let's see if there are any tags, then we can use `git show` command to see information about the tag.
 ```bash
 git tag
 git show [tagname]
 ```
 
-## Level 31
+# Level 31
 Clone the repo and look at the readme. This time we get to push stuff! First, let's see what our current brach is.
 ```bash
 git branch
@@ -408,7 +410,7 @@ Now, the file is in our local repo but we have to push it to the remote one. We 
 git push origin master
 ```
 
-## Level 32
+# Level 32
 This level puts us into a strange shell in which we must escape. Everything we type becomes uppercase. In Linux, commands are case sensitive so `LS` for example will not work. This puts us in a pickle. How are we supposed to execute commands like this? The trick to this level is environmental variables. Open a terminal on your personal machine.
 ```bash
 printevn

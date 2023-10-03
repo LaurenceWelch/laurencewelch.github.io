@@ -3,6 +3,7 @@ layout: post
 title:  "Crackmes"
 date:   2023-09-06
 categories: ghidra
+published: false
 ---
 
 ## gerryvanboven's get the passcode

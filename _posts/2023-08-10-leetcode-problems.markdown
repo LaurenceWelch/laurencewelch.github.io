@@ -492,7 +492,7 @@ class Solution:
             num = newNum 
 ```
 
-# 21. Merge Two Two Sorted Lists
+# 21. Merge Two Sorted Lists
 For this problem we need to merge two linked list which are sorted. We need to ensure that our returned list is also sorted. To solve this problem we can make a new list. Each iteration we can check list1 and list2, take the lower value, and append it to our new linked list. To make sure we aren't repeating ourselves, after appending a node, we have to increment the list in which we pulled a value from. After this, we have to check if their are any leftover nodes in either list and if so, append them to the end of our new list.
 ```python
 class Solution:
@@ -515,3 +515,68 @@ class Solution:
         elif list2: cur.next = list2
         return newHead.next
 ```
+
+# 104. Maximum Depth of Binary Tree
+For this problem we are given a binary search tree and we need to determine it's maximum depth. For this problem we can use a breadth-first search. A BFS searches each child before moving to the child nodes as opposed to depth-first search which goes as far as possible until it hits a null node. 
+We also need a dictionary to store each nodes current depth. Using this dictionary, when we find a new child node, we can set that nodes depth to parent depth + 1. BFS uses a queue (first-in first-out), to store nodes. So as we discover nodes, we append them to the queue, and the earliest node will be considered next. Everytime we find a child node, we can check if it's depth is deeper than the current max depth.
+```python
+class Solution:
+    def maxDepth(self, root: Optional[TreeNode]) -> int:
+        #exit condition
+        if root == None: return 0
+        d = {} #store depths of each node
+        d[root] = 1
+        maxDepth = 1
+        queue = [root]
+        #start Breadth-First Search
+        while len(queue) != 0:
+            v = queue.pop(0)
+            for node in [v.left, v.right]:
+                if node:
+                    nodeDepth = d[v] + 1
+                    d[node] = nodeDepth
+                    maxDepth = max(maxDepth, nodeDepth)
+                    queue.append(node)                
+        return maxDepth
+```
+
+# 100. Same Tree
+For this problem we are given two binary search trees and we have to determine if they are equal, ie they have the same structure and each node has the same value. Similarily to the previous problem, we can use a BFS to traverse the trees and compare each node. I made a helper function to reduce clutter when comparing nodes. After all, nodes can be considered equal if they have the same value or if they are both null (None).
+```python
+class Solution:
+    def isSameTree(self, p: Optional[TreeNode], q: Optional[TreeNode]) -> bool:
+        
+        #return 0 if both null, 1 if both equal, -1 if not equal
+        def isEqual(n1, n2):
+            if n1 and n2 and n1.val == n2.val: return 1
+            if n1 is None and n2 is None: return 0
+            return -1
+
+        #exit condition
+        result = isEqual(p, q)
+        if result == -1: return False
+        if result == 0: return True
+        #create queues
+        pq = [p]
+        qq = [q]
+        #bfs
+        while len(pq) != 0 and len(qq) != 0:
+            pv = pq.pop(0)
+            qv = qq.pop(0)
+            #p children
+            pc = [pv.left, pv.right]
+            #q children
+            qc = [qv.left, qv.right]
+            #loop over children
+            for i in range(2):
+                c1 = pc[i]
+                c2 = qc[i]
+                result = isEqual(c1, c2)
+                if result == -1: return False
+                if result == 1:
+                    pq.append(c1)
+                    qq.append(c2)
+        return True
+```
+
+

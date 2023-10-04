@@ -7,7 +7,7 @@ categories: jekyll update
 
 |![a key](https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80)|
 |:--:|
-|*Shahadat Rahman via unsplash*|
+|*photo by Shahadat Rahman via unsplash*|
 
 # 88. Merge Sorted Array
 ```python
@@ -49,7 +49,7 @@ def removeDuplicates(self, nums: List[int]) -> int:
     return cur
 ```
 
-** 80. Remove Duplicates from Sorted Array 2
+# 80. Remove Duplicates from Sorted Array 2
 ```python
 def removeDuplicates(self, nums: List[int]) -> int:
     dic = {}

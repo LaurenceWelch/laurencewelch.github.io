@@ -7,7 +7,7 @@ categories: jekyll update
 
 |![a key](https://images.unsplash.com/photo-1553991562-9f24b119ff51?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2678&q=80) |
 |:--:|
-| *Michael Dziedzic via unsplash* |
+| *photo by Michael Dziedzic via unsplash* |
 
 ## Bandit Primer
 # SSH and RSA

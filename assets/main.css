@@ -135,8 +135,6 @@ table td { border: 1px solid #e8e8e8; }
 .highlighter-rouge .highlight { background: #f2f2f2; }
 
 .highlighter-rouge .highlight {
-background-image: url("img.png");
-background-position-y: -15px;
 }
 
 .highlight .c { color: #998; font-style: italic; }

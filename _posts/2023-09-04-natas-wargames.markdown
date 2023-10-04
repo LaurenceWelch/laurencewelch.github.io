@@ -5,6 +5,10 @@ date:   2023-09-04
 categories: jekyll update
 ---
 
+|![a spiderweb](https://images.unsplash.com/photo-1600463241302-88b0e1a51175?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80)|
+|:--:|
+|*photo by Shannon Potter via unsplash*|
+
 # Level 0
 Natas teaches serverside security basics. Each level is a website. For this level, navigate to the website, enter and credentials, and then open the dev console to inspect the html elements. It is also possible to use `curl` to get the html.
 ```bash

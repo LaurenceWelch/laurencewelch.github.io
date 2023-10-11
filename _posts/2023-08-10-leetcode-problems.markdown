@@ -10,6 +10,7 @@ categories: jekyll update
 |*photo by Shahadat Rahman via unsplash*|
 
 # 88. Merge Sorted Array
+For this problem we are give two lists: nums1 and nums2 and we need to merge them together. Furthermore, the merged list must be sorted, and we must merge nums2 into nums1, i.e. we cannot return a new list. For this problem, we can create an index representing a current index of the merged list and then iterate backwards, adding either from nums1 or nums2 depending on their value. This index, called `cur` will be equal to the length of nums1 plus the length of nums2 - 1. We also need to store two other indexes, `i1` and `i2`, so that we can track the current indexes of nums1 and nums2 as we pull numbers from them.
 ```python
 def merge(self, nums1: List[int], m: int, nums2: List[int], n: int) -> None:
     i1 = m - 1
@@ -517,8 +518,8 @@ class Solution:
 ```
 
 # 104. Maximum Depth of Binary Tree
-For this problem we are given a binary search tree and we need to determine it's maximum depth. For this problem we can use a breadth-first search. A BFS searches each child before moving to the child nodes as opposed to depth-first search which goes as far as possible until it hits a null node. 
-We also need a dictionary to store each nodes current depth. Using this dictionary, when we find a new child node, we can set that nodes depth to parent depth + 1. BFS uses a queue (first-in first-out), to store nodes. So as we discover nodes, we append them to the queue, and the earliest node will be considered next. Everytime we find a child node, we can check if it's depth is deeper than the current max depth.
+For this problem we are given a binary search tree and we need to determine it's maximum depth. For this problem we can use a breadth-first search. A bfs searches each child before moving to the child nodes as opposed to depth-first search which goes as far as possible until it hits a null node. 
+We also need a dictionary to store each nodes current depth. Using this dictionary, when we find a new child node, we can set that nodes depth to parent depth + 1. bfs uses a queue (first-in first-out), to store nodes. So as we discover nodes, we append them to the queue, and the earliest node will be considered next. Everytime we find a child node, we can check if it's depth is deeper than the current max depth.
 ```python
 class Solution:
     def maxDepth(self, root: Optional[TreeNode]) -> int:
@@ -541,7 +542,7 @@ class Solution:
 ```
 
 # 100. Same Tree
-For this problem we are given two binary search trees and we have to determine if they are equal, ie they have the same structure and each node has the same value. Similarily to the previous problem, we can use a BFS to traverse the trees and compare each node. I made a helper function to reduce clutter when comparing nodes. After all, nodes can be considered equal if they have the same value or if they are both null (None).
+For this problem we are given two binary search trees and we have to determine if they are equal, ie they have the same structure and each node has the same value. Similarily to the previous problem, we can use a bfs to traverse the trees and compare each node. I made a helper function to reduce clutter when comparing nodes. After all, nodes can be considered equal if they have the same value or if they are both null (None).
 ```python
 class Solution:
     def isSameTree(self, p: Optional[TreeNode], q: Optional[TreeNode]) -> bool:
@@ -577,6 +578,109 @@ class Solution:
                     pq.append(c1)
                     qq.append(c2)
         return True
+```
+
+# 701. Insert into a Binary Search Tree
+This problem asks us to insert a new node into a binary search tree. We can solve this problem by looping through the tree until we reach a null (None) node. If the number we are inserting is lower, we go to the left child and if the number is higher we go to the right child. We also need to store the true root of the tree so that we can return it, and changing previous node so that we can append our new node to this previous node.
+```python
+class Solution:
+    def insertIntoBST(self, root: Optional[TreeNode], val: int) -> Optional[TreeNode]:
+        #exit condition
+        if not root: return TreeNode(val)
+        #store original root
+        trueRoot = root
+        #store previous node
+        prev = None
+        #loop through tree until None is found
+        while root:
+            if val < root.val:
+                prev = root
+                root = root.left
+            else:
+                prev = root
+                root = root.right
+        #after loop, insert the new node
+        if val < prev.val:
+            prev.left = TreeNode(val)
+        else:
+            prev.right = TreeNode(val)
+        #return the stored root node
+        return trueRoot
+```
+
+# 226. Invert Binary Tree
+For this problem we need to invert a binary tree. By invert, they mean that if you were to traverse the tree in order, the values of be descending. For example if you have a binary search tree with a root of 2 and children with values of 1 and 3, the inverted tree should have a root of 2 with children of values 3 and 1. One way to do this is to use a Breadth-First Search and simply swap the left and right children. The bfs algorithm goes row by row, so we can simply swap the children as we descend down.
+```python
+class Solution:
+    def invertTree(self, root: Optional[TreeNode]) -> Optional[TreeNode]:
+        #exit condition
+        if root == None: return None
+        #bfs so we use a queue
+        q = [root]
+        while len(q) != 0:
+            v = q.pop(0)
+            #swap left and right
+            temp = v.left
+            v.left = v.right
+            v.right = temp
+            for node in [v.left, v.right]:
+                if node: q.append(node)
+        return root
+```
+
+# 2415. Reverse Odd Levels of Binary Tree
+This problem is weird. We are given a binary tree. Each odd depth of the tree we have to reverse the node values. It is important that our reversing doesn't effect the even depth nodes at all.
+First, I tried reversing odd level depths. Problem there is that it upsets the even ones too. Then I tried reversing the value of odd level depths. No Dice. As the tree goes, it wasn't truly reversing the entirety of the odd rows; ie. if the row was something like 8, 13, 21, 34, it wasn't giving me the correct row of 34, 21, 13, 8. Eventually, I got a working solution that used one dictionary to store the depth of each node and another dictionary to store arrays of values that I could pull from to reverse the odd depths. However, it was confusing, arcane, and non-satisfying. I wanted a cleaner solution.
+As the minutes passed a certain frustartion started boiling inside of me. I turned to the internet and finally figured it out. What we need is a bfs, but it needs to be rows by row. Typically, a bfs loop is node by node not row by row. Here is a typical bfs algorithm.
+```python
+def bfs(root):
+    q = [root]
+    while q:
+        v = q.pop(0)
+        print(v.val)
+        for node in [v.left, v.right]:
+            if node: q.append(node)
+```
+Each iteration is going to look at one node. Here's how a depth-level bfs looks like.
+```python
+def rdfs(root):
+    q = [root]
+    while q:
+        for _ in range(len(q)):
+            v = q.pop(0)
+            print(v.val)
+            for node in [v.left, v.right]:
+                if node: q.append(node)
+```
+Looks pretty similar doesn't it? The major difference is the nested `for` loop in the `while q` loop. Each iteration of `while q` will print one row of the tree. With that in mind, we can create our solution.
+```python
+class Solution:
+    def reverseOddLevels(self, root: Optional[TreeNode]) -> Optional[TreeNode]:
+        #exit condition
+        if root == None: return None
+        #bfs queue
+        q = [root]
+        #track current depth
+        depth = 0
+        while q:
+            #if current depth is odd, flip the node values
+            if depth % 2 == 1:
+                l = 0
+                r = len(q) - 1
+                while l < r:
+                    temp = q[l].val
+                    q[l].val = q[r].val
+                    q[r].val = temp
+                    l += 1
+                    r -= 1
+            #bfs but go row by row
+            for _ in range(len(q)):
+                v = q.pop(0)
+                for node in [v.left, v.right]:
+                    if node: q.append(node)
+            #increment depth
+            depth += 1
+        return root
 ```
 
 

@@ -683,4 +683,27 @@ class Solution:
         return root
 ```
 
-
+# 11. Path Sum
+Another Binary Tree problem! This one wants us to see if there is a path, from root to leaf, that has a sum equal to a given number. We can't skip nodes or stop before reaching a leaf. How can we solve this? First I thought a DFS would solve this. There probably is a DFS to solve it but I couldn't figure it out because there's a problem. DFS goes from root to leaf, but then it goes to the next leaf, i.e. it doesn't start from root to leaf each time. How can we know what the current sum is when we have to go backwards? It gets messy fast. Then, I thought of BFS. With BFS I can calculate row by row and I won't have to think about going backwards. Specifically I decided to use the row by row version of BFS as explained in the previous problem.
+The only addition I need is a dictionary. The dictionary will use nodes as keys and each key-value pair will store the sum of the previous nodes. Every time I visit a node, I will check if it's a leaf. If so, I can check the sum and if it equals the desired sum, I can return True. When adding nodes to the queue, I can also update the sum stored in the dictionary.
+```python
+class Solution:
+    def hasPathSum(self, root: Optional[TreeNode], targetSum: int) -> bool:
+        if not root: return False
+        q = [root]
+        #dictionary to sum prev nodes sum
+        d = {root: 0}
+        while q:
+            for _ in q:
+                v = q.pop(0)
+                #it's a leaf, test the sum
+                if not v.left and not v.right:
+                    if v.val + d[v] == targetSum:
+                        return True
+                for node in [v.left, v.right]:
+                    if node:
+                        #append and make sure to store current sum
+                        d[node] = v.val + d[v]
+                        q.append(node)
+        return False
+```

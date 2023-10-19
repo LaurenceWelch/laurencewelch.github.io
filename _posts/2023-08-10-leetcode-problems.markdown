@@ -694,7 +694,7 @@ class Solution:
         #dictionary to sum prev nodes sum
         d = {root: 0}
         while q:
-            for _ in q:
+            for _ in range(len(q)):
                 v = q.pop(0)
                 #it's a leaf, test the sum
                 if not v.left and not v.right:
@@ -706,4 +706,25 @@ class Solution:
                         d[node] = v.val + d[v]
                         q.append(node)
         return False
+```
+
+# 637. Average of Levels in Binary Tree
+Time for another row based BFS! For this one, we can do our row based BFS as explained in the previous two problems. Each level, we need to add the values and then average them and append it to an array.
+```python
+class Solution:
+    def averageOfLevels(self, root: Optional[TreeNode]) -> List[float]:
+        q = [root]
+        result = []
+        while q:
+            #count and sum
+            c = 0
+            s = 0
+            for _ in range(len(q)):
+                v = q.pop(0)
+                c += 1
+                s += v.val
+                for node in [v.left, v.right]:
+                    if node: q.append(node)
+            result.append(s / c)
+        return result
 ```

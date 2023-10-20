@@ -728,3 +728,31 @@ class Solution:
             result.append(s / c)
         return result
 ```
+
+# 530. Minimum Absolute Difference
+For this problem, we need to find the minimum difference between any two nodes in a Binary search tree. How can we find this? If we were to view the BST in order, i.e. something like: 1, 4, 7, 8, we can clearly see that the smallest difference is 1 because 8 - 7 = 1. So, let's view the BST in order using in-order traversal! We also need to keep track of the previous nodes value so that we can calculate the difference as well as the current lowest difference which we will return at the end of the algorithm. I set the lowest difference variable to a very high number, so that we don't accidently return the wrong number. I set the previous value to a very low number because in the first iteration, we don't actually have a prev value, so we have to make one up.
+```python
+class Solution:
+    def getMinimumDifference(self, root: Optional[TreeNode]) -> int:
+        if not root: return 0
+        stack = []
+        #start high as to not corrupt results
+        lowestDiff = 100000
+        #start low as to not corrupt results
+        prevVal = -100000
+        #algorithm is based off of in-order traversal
+        while stack or root:
+            if root:
+                stack.append(root)
+                root = root.left
+            else:
+                v = stack.pop()
+                #calc difference, then update previous node value
+                diff = v.val - prevVal
+                if diff < lowestDiff:
+                    lowestDiff = diff
+                prevVal = v.val
+                if v.right:
+                    root = v.right
+        return lowestDiff
+```
